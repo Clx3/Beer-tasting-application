@@ -4,10 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 public class User {
 	
 	@Id
@@ -18,6 +21,7 @@ public class User {
 	@NotNull
 	@NotEmpty
 	private String username;
+	
 	
 	@NotNull
 	@NotEmpty
