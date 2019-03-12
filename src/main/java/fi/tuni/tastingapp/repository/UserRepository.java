@@ -1,5 +1,9 @@
 package fi.tuni.tastingapp.repository;
 
-public class UserRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import fi.tuni.tastingapp.entity.User;
+
+public interface UserRepository extends CrudRepository<User, Long> {
 
 }
