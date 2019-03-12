@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
@@ -13,8 +15,12 @@ public class User {
 	private long id;
 	
 	@Column(unique=true)
+	@NotNull
+	@NotEmpty
 	private String username;
 	
+	@NotNull
+	@NotEmpty
 	private String password;
 	
 	public User() {}
