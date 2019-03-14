@@ -9,6 +9,9 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 @Entity
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 public class User {
@@ -25,6 +28,7 @@ public class User {
 	
 	@NotNull
 	@NotEmpty
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
 	public User() {}
