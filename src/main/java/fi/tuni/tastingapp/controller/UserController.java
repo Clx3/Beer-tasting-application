@@ -43,10 +43,36 @@ public class UserController {
 		
 	}
 	
+	@RequestMapping(value = "users/login", method = RequestMethod.POST)
+	public User login(@RequestBody User user) throws UserAuthenticationException {
+		if(user != null) {
+			User userFromDatabase = userRepo.findByUsername(user.getUsername());
+			
+			if(userFromDatabase == null)
+				throw new UserAuthenticationException("User " + user.getUsername() + " not found.");
+			
+			/* EBIN :-D */
+			if(user.getPassword().contentEquals(userFromDatabase.getPassword()))
+				return userFromDatabase;
+			else
+				throw new UserAuthenticationException("Invalid password!");
+		}
+		return null;
+	}
+	
 	@ResponseStatus(code = HttpStatus.CONFLICT)
 	class UsernameAlreadyTakenException extends AuthenticationException {
 		
 		public UsernameAlreadyTakenException(String msg) {
+			super(msg);
+		}
+		
+	}
+	
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	class UserAuthenticationException extends AuthenticationException {
+		
+		public UserAuthenticationException(String msg) {
 			super(msg);
 		}
 		
