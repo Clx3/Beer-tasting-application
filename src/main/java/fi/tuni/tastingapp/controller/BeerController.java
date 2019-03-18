@@ -1,5 +1,7 @@
 package fi.tuni.tastingapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,11 @@ public class BeerController {
 	
 	@Autowired
 	private BeerRepository beerRepository;
+	
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public List<Beer> getAllBeers() {
+		return beerRepository.findAll();
+	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.PUT)
 	public Beer addBeer(@RequestBody Beer beer) throws JsonProcessingException {
