@@ -20,12 +20,13 @@ public class User {
 	@GeneratedValue
 	private long id;
 	
-	@Column(unique=true)
+	@Column(name="username", unique=true)
 	@NotNull
 	@NotEmpty
 	private String username;
 	
 	
+	@Column(name="password")
 	@NotNull
 	@NotEmpty
 	@JsonProperty(access = Access.WRITE_ONLY)

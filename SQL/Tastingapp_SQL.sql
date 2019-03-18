@@ -11,8 +11,8 @@ CREATE TABLE user (
 
 CREATE TABLE beer(
 	id BIGINT(20) NOT NULL,
-    name VARCHAR(50) NOT NULL,
+    beerName VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(1000),
-    alchoholAmount FLOAT(100, 2) NOT NULL,
+    alcoholPercent FLOAT(100, 2) NOT NULL,
     PRIMARY KEY (id)
 );

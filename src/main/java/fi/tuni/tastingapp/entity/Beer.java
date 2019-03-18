@@ -1,9 +1,11 @@
 package fi.tuni.tastingapp.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="beer")
@@ -13,26 +15,29 @@ public class Beer {
 	@GeneratedValue
 	private long id;
 	
-	private String name;
+	@Column(name="beerName")
+	private String beerName;
 	
+	@Column(name="description")
 	private String description;
 	
-	private float alcoholAmount;
+	@Column(name="alcoholPercent")
+	private float alcoholPercent;
 	
 	public Beer() {}
 	
-	public Beer(String name, String description, float alchoholAmount) {
-		this.name = name;
+	public Beer(String beerName, String description, float alchoholAmount) {
+		this.beerName = beerName;
 		this.description = description;
-		this.alcoholAmount = alchoholAmount;
+		this.alcoholPercent = alchoholAmount;
 	}
 
-	public String getName() {
-		return name;
+	public String getBeerName() {
+		return beerName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setBeerName(String beerName) {
+		this.beerName = beerName;
 	}
 
 	public String getDescription() {
@@ -43,12 +48,12 @@ public class Beer {
 		this.description = description;
 	}
 
-	public float getAlcoholAmount() {
-		return alcoholAmount;
+	public float getAlcoholPercent() {
+		return alcoholPercent;
 	}
 
-	public void setAlcoholAmount(float alcoholAmount) {
-		this.alcoholAmount = alcoholAmount;
+	public void setAlcoholPercent(float alcoholPercent) {
+		this.alcoholPercent = alcoholPercent;
 	}
 
 }
