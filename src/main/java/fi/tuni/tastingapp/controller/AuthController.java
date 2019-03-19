@@ -31,14 +31,14 @@ public class AuthController {
 
             /* EBIN :-D */
             if(user.getPassword().contentEquals(userFromDatabase.getPassword()))
-                return tokens.addNewToken();
+                return "{\"token\":" + "\"" + tokens.addNewToken() + "\"}";
             else
                 throw new UserAuthenticationException("Väärä salis vitun runkku");
         }
         return null;
     }
 
-    @RequestMapping("/tokenTest")
+    @RequestMapping("/tokenRefresh")
     public String test(@RequestHeader(value="Token") String token) throws InvalidTokenException{
         if(tokens.contains(token))
             return "authorized";
