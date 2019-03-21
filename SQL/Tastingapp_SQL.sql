@@ -16,3 +16,11 @@ CREATE TABLE beer(
     alcoholPercent FLOAT(100, 2) NOT NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE tastingSession(
+	id BIGINT(20) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    startingDate DATETIME NOT NULL,
+    additionalInfo VARCHAR(2000) NOT NULL,
+    PRIMARY KEY (id)
+);
