@@ -24,3 +24,12 @@ CREATE TABLE tastingSession(
     additionalInfo VARCHAR(2000) NOT NULL,
     PRIMARY KEY (id)
 );
+
+CREATE TABLE beerAndTastingSession(
+	id BIGINT(20) NOT NULL,
+    beerId BIGINT(20) NOT NULL,
+    tastingSessionId BIGINT(20) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (beerId) REFERENCES beer(id),
+    FOREIGN KEY (tastingSessionId) REFERENCES tastingSession(id)
+);

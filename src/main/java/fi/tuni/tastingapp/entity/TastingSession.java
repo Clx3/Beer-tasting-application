@@ -28,7 +28,6 @@ public class TastingSession {
 	public TastingSession() {}
 		
 	public TastingSession(String name, LocalDateTime startingDate, String additionalInfo) {
-		super();
 		this.name = name;
 		this.startingDate = startingDate;
 		this.additionalInfo = additionalInfo;
