@@ -38,6 +38,10 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
+	
+	public long getId() {
+		return id;
+	}
 
 	public String getUsername() {
 		return username;

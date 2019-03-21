@@ -31,6 +31,10 @@ public class Beer {
 		this.description = description;
 		this.alcoholPercent = alchoholAmount;
 	}
+	
+	public long getId() {
+		return id;
+	}
 
 	public String getBeerName() {
 		return beerName;
