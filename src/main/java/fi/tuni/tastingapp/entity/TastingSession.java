@@ -32,6 +32,10 @@ public class TastingSession {
 		this.startingDate = startingDate;
 		this.additionalInfo = additionalInfo;
 	}
+	
+	public long getId() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
