@@ -19,8 +19,12 @@ public class BeerController {
 	private BeerRepository beerRepository;
 
 	@RequestMapping(value = "beers/{beerIds}", method = RequestMethod.GET)
-	public List<Beer> getBeersByIds(@PathVariable List<Long> beerIds) {
-		return beerRepository.findByIdIn(beerIds);
+	public List<Beer> getBeersByIds(@PathVariable List<Long> beerIds) throws Exception{
+		List<Beer> beers = beerRepository.findByIdIn(beerIds);
+		if(beers.size() == 0){
+			throw new BeerNotFoundException();
+		}
+		return beers;
 	}
 
 	@RequestMapping(value = "beers/", method = RequestMethod.GET)
@@ -32,22 +36,12 @@ public class BeerController {
 	public Beer addBeer(@RequestBody Beer beer) throws JsonProcessingException {
 		return beerRepository.save(beer);
 	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Beer getBeerById(@PathVariable long id) throws BeerNotFoundException {
-		Optional<Beer> beer = beerRepository.findById(id);
-		if (beer.isPresent()) {
-			return beer.get();
-		} else {
-			throw new BeerNotFoundException();
-		}
-
-	}
+	
 }
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	class BeerNotFoundException extends Exception{
 
 	public BeerNotFoundException() {
-		super("Beer with requested id was not found from database");
+		super("No beers found");
 	}
 }
