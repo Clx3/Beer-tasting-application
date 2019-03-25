@@ -18,9 +18,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import fi.tuni.tastingapp.entity.Beer;
 import fi.tuni.tastingapp.entity.BeerAndTastingSession;
 import fi.tuni.tastingapp.entity.TastingSession;
 import fi.tuni.tastingapp.repository.BeerAndTastingSessionRepository;
+import fi.tuni.tastingapp.repository.BeerRepository;
 import fi.tuni.tastingapp.repository.TastingSessionRepository;
 
 /**
@@ -54,6 +56,15 @@ public class TastingSessionController {
 	private BeerAndTastingSessionRepository beerAndTastingSessionRepository;
 	
 	@Autowired
+	private BeerRepository beerRepository;
+	
+	/**
+	 * Returns a custom JSON string that contains all the tasting sessions
+	 * customized. Every tasting session has a custom name/value pair added called
+	 * beers which contains all the beers as objects in an array as they are.
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "tastingsession/", method = RequestMethod.GET)
 	public String getTastingSessions() {
 		List<JsonObject> outputObjects = new ArrayList<>();
@@ -64,12 +75,21 @@ public class TastingSessionController {
 		if(tastingSessions != null && tastingSessions.size() > 0) {
 			for(TastingSession tastingSessionObj : tastingSessions) {
 				JsonObject jsonObject = jsonParser.parse(gson.toJson(tastingSessionObj)).getAsJsonObject();
-				int tastingSessionId = jsonObject.get("id").getAsInt();
-				
-				Long[] beerIds = beerAndTastingSessionRepository.findAllBeerIdsByTastingSessionId(tastingSessionId);
-				
 				jsonObject.addProperty("startingDate", dateTimeFormatter.format(tastingSessionObj.getStartingDate()));
-				jsonObject.addProperty("beers", gson.toJson(beerIds));
+				
+				Long tastingSessionId = jsonObject.get("id").getAsLong();		
+				
+				List<Long> beerIds = new ArrayList<>();
+				
+				beerAndTastingSessionRepository.findAllBeerIdsByTastingSessionId(tastingSessionId)
+						.stream().forEach(e -> beerIds.add(e.longValue()));
+				
+				List<Beer> beers = new ArrayList<>();
+				if(beerIds != null && beerIds.size() > 0) {
+					beers = beerRepository.findByIdIn(beerIds);
+					
+					jsonObject.add("beers", gson.toJsonTree(beers));
+				}
 				
 				outputObjects.add(jsonObject);
 			}

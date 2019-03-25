@@ -1,5 +1,6 @@
 package fi.tuni.tastingapp.repository;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -12,5 +13,5 @@ public interface BeerAndTastingSessionRepository extends CrudRepository<BeerAndT
 	List<BeerAndTastingSession> findAllByTastingSessionId(long tastingSessionId);
 	
 	@Query(value = "SELECT beerId FROM beerAndTastingSession WHERE tastingSessionId LIKE(?1)", nativeQuery = true)
-	Long[] findAllBeerIdsByTastingSessionId(long tastingSessionId);
+	List<BigInteger> findAllBeerIdsByTastingSessionId(Long tastingSessionId);
 }

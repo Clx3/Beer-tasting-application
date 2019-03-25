@@ -18,11 +18,11 @@ public class BeerAndTastingSession {
 	private long beerId;
 	
 	@Column(name="tastingSessionId")
-	private long tastingSessionId;
+	private Long tastingSessionId;
 	
 	public BeerAndTastingSession() {}
 
-	public BeerAndTastingSession(long beerId, long tastingSessionId) {
+	public BeerAndTastingSession(long beerId, Long tastingSessionId) {
 		this.beerId = beerId;
 		this.tastingSessionId = tastingSessionId;
 	}
@@ -35,11 +35,11 @@ public class BeerAndTastingSession {
 		this.beerId = beerId;
 	}
 
-	public long getTastingSessionId() {
+	public Long getTastingSessionId() {
 		return tastingSessionId;
 	}
 
-	public void setTastingSessionId(long tastingSessionId) {
+	public void setTastingSessionId(Long tastingSessionId) {
 		this.tastingSessionId = tastingSessionId;
 	}
 
