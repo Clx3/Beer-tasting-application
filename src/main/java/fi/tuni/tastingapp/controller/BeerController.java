@@ -36,7 +36,7 @@ public class BeerController {
 	public Beer addBeer(@RequestBody Beer beer) throws JsonProcessingException {
 		return beerRepository.save(beer);
 	}
-	
+
 }
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	class BeerNotFoundException extends Exception{

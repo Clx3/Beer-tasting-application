@@ -1,5 +1,6 @@
 package fi.tuni.tastingapp.controller;
 
+import com.google.gson.JsonObject;
 import fi.tuni.tastingapp.entity.User;
 import fi.tuni.tastingapp.repository.UserRepository;
 import fi.tuni.tastingapp.security.TokenRepository;
@@ -29,11 +30,20 @@ public class AuthController {
             if(userFromDatabase == null)
                 throw new UserAuthenticationException("User " + user.getUsername() + " not found.");
 
+
             /* EBIN :-D */
-            if(user.getPassword().contentEquals(userFromDatabase.getPassword()))
-                return "{\"token\":" + "\"" + tokens.addNewToken() + "\"}";
-            else
+            if(user.getPassword().contentEquals(userFromDatabase.getPassword())){
+                JsonObject userWithToken = new JsonObject();
+                userWithToken.addProperty("token", tokens.addNewToken());
+                userWithToken.addProperty("user", userFromDatabase.getUsername());
+                userWithToken.addProperty("id", userFromDatabase.getId());
+
+                return userWithToken.toString();
+            }
+            else{
                 throw new UserAuthenticationException("Väärä salis vitun runkku");
+            }
+
         }
         return null;
     }
