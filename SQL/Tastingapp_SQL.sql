@@ -33,3 +33,12 @@ CREATE TABLE beerAndTastingSession(
     FOREIGN KEY (beerId) REFERENCES beer(id),
     FOREIGN KEY (tastingSessionId) REFERENCES tastingSession(id)
 );
+
+CREATE TABLE user_and_tastingsession(
+	id BIGINT(20) NOT NULL,
+    userId BIGINT(20) NOT NULL,
+    tastingSessionId BIGINT(20) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES user(id),
+    FOREIGN KEY (tastingSessionId) REFERENCES tastingSession(id)
+);

@@ -37,8 +37,7 @@ public class UserController {
 			return createdUser;
 		} catch(DataIntegrityViolationException  e) {
 			throw new UsernameAlreadyTakenException("Username is already in use!");			
-		}
-		
+		}		
 	}
 	
 	@RequestMapping(value = "users/login", method = RequestMethod.POST)
