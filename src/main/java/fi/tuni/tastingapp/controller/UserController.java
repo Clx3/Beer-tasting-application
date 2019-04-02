@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import fi.tuni.tastingapp.entity.User;
+import fi.tuni.tastingapp.entity.UserAndTastingSession;
+import fi.tuni.tastingapp.repository.UserAndTastingSessionRepository;
 import fi.tuni.tastingapp.repository.UserRepository;
 
 @RestController
@@ -21,6 +23,9 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private UserAndTastingSessionRepository userAndTastingSessionRepo;
 			
 	@RequestMapping(value = "users/", method = RequestMethod.GET)
 	public List<User> getAllUsers() {
@@ -55,6 +60,18 @@ public class UserController {
 				throw new UserAuthenticationException("Invalid password!");
 		}
 		return null;
+	}
+	
+	@RequestMapping(value = "users/jointastingsession", method = RequestMethod.POST)
+	public UserAndTastingSession joinTastingSession(@RequestBody UserAndTastingSession userAndTastingSession) {
+		UserAndTastingSession request = userAndTastingSession;
+		
+		UserAndTastingSession current = userAndTastingSessionRepo.findByUserIdAndTastingSessionId(request.getUserId(), request.getTastingSessionId());
+		
+		if(current != null)
+			return current;
+		else
+			return userAndTastingSessionRepo.save(request);
 	}
 	
 	@ResponseStatus(code = HttpStatus.CONFLICT)
