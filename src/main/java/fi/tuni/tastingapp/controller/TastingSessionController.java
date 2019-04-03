@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,6 +97,34 @@ public class TastingSessionController {
 		}
 		
 		return gson.toJson(outputObjects);
+	}
+	
+	@RequestMapping(value = "tastingsession/{id}", method = RequestMethod.GET)
+	public String getTastingSession(@PathVariable long id) {
+		JsonObject outputObject = new JsonObject();
+		
+		TastingSession tastingSession = tastingSessionRepository.findById(id);
+		
+		if(tastingSession != null) {
+			outputObject = jsonParser.parse(gson.toJson(tastingSession)).getAsJsonObject();
+			outputObject.addProperty("startingDate", dateTimeFormatter.format(tastingSession.getStartingDate()));
+				
+			Long tastingSessionId = outputObject.get("id").getAsLong();		
+				
+			List<Long> beerIds = new ArrayList<>();
+				
+			beerAndTastingSessionRepository.findAllBeerIdsByTastingSessionId(tastingSessionId)
+					.stream().forEach(e -> beerIds.add(e.longValue()));
+				
+			List<Beer> beers = new ArrayList<>();
+			if(beerIds != null && beerIds.size() > 0) {
+				beers = beerRepository.findByIdIn(beerIds);
+					
+				outputObject.add("beers", gson.toJsonTree(beers));
+			}
+				
+		}		
+		return gson.toJson(outputObject);		
 	}
 	
 	@RequestMapping(value = "tastingsession/", method = RequestMethod.PUT)
