@@ -23,9 +23,6 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepo;
-	
-	@Autowired
-	private UserAndTastingSessionRepository userAndTastingSessionRepo;
 			
 	@RequestMapping(value = "users/", method = RequestMethod.GET)
 	public List<User> getAllUsers() {
@@ -60,18 +57,6 @@ public class UserController {
 				throw new UserAuthenticationException("Invalid password!");
 		}
 		return null;
-	}
-	
-	@RequestMapping(value = "users/jointastingsession", method = RequestMethod.POST)
-	public UserAndTastingSession joinTastingSession(@RequestBody UserAndTastingSession userAndTastingSession) {
-		UserAndTastingSession request = userAndTastingSession;
-		
-		UserAndTastingSession current = userAndTastingSessionRepo.findByUserIdAndTastingSessionId(request.getUserId(), request.getTastingSessionId());
-		
-		if(current != null)
-			return current;
-		else
-			return userAndTastingSessionRepo.save(request);
 	}
 	
 	@ResponseStatus(code = HttpStatus.CONFLICT)
