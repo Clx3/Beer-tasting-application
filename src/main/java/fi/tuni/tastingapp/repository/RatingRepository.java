@@ -9,5 +9,7 @@ import fi.tuni.tastingapp.entity.Rating;
 public interface RatingRepository extends CrudRepository<Rating, Long> {
 	
 	public List<Rating> findAll();
+	
+	public Rating findByUserIdAndBeerId(long userId, long beerId);
 
 }
