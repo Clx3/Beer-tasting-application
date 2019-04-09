@@ -42,3 +42,13 @@ CREATE TABLE user_and_tastingsession(
     FOREIGN KEY (userId) REFERENCES user(id),
     FOREIGN KEY (tastingSessionId) REFERENCES tastingSession(id)
 );
+
+CREATE TABLE rating(
+	id BIGINT(20) NOT NULL,
+    userId BIGINT(20) NOT NULL,
+    beerId BIGINT(20) NOT NULL,
+    comment VARCHAR(500),
+    PRIMARY KEY (id),
+    FOREIGN KEY (userId) REFERENCES user(id),
+    FOREIGN KEY (beerId) REFERENCES beer(id)
+);
