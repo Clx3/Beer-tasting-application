@@ -20,14 +20,18 @@ public class Rating {
 	@Column(name = "beerId")
 	private long beerId;
 	
+	@Column(name = "ratingValue")
+	private double ratingValue;
+	
 	@Column(name = "comment")
 	private String comment;
 	
 	public Rating() {}
 
-	public Rating(long userId, long beerId, String comment) {
+	public Rating(long userId, long beerId, float ratingValue, String comment) {
 		this.userId = userId;
 		this.beerId = beerId;
+		this.ratingValue = ratingValue;
 		this.comment = comment;
 	}
 
@@ -45,6 +49,14 @@ public class Rating {
 
 	public void setBeerId(long beerId) {
 		this.beerId = beerId;
+	}
+
+	public double getRatingValue() {
+		return ratingValue;
+	}
+
+	public void setRatingValue(double ratingValue) {
+		this.ratingValue = ratingValue;
 	}
 
 	public String getComment() {

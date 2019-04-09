@@ -47,6 +47,7 @@ CREATE TABLE rating(
 	id BIGINT(20) NOT NULL,
     userId BIGINT(20) NOT NULL,
     beerId BIGINT(20) NOT NULL,
+    ratingValue DOUBLE(10,2) NOT NULL,
     comment VARCHAR(500),
     PRIMARY KEY (id),
     FOREIGN KEY (userId) REFERENCES user(id),
