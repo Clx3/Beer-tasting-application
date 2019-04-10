@@ -12,6 +12,6 @@ public interface BeerAndTastingSessionRepository extends CrudRepository<BeerAndT
 	
 	List<BeerAndTastingSession> findAllByTastingSessionId(long tastingSessionId);
 	
-	@Query(value = "SELECT beerId FROM beerAndTastingSession WHERE tastingSessionId LIKE(?1)", nativeQuery = true)
+	@Query(value = "SELECT beer_Id FROM beer_And_Tasting_Session WHERE tasting_Session_Id LIKE(?1)", nativeQuery = true)
 	List<BigInteger> findAllBeerIdsByTastingSessionId(Long tastingSessionId);
 }
