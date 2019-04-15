@@ -1,6 +1,7 @@
 package fi.tuni.tastingapp.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import fi.tuni.tastingapp.entity.BeerAndTastingSession;
 import fi.tuni.tastingapp.repository.BeerAndTastingSessionRepository;
@@ -69,6 +70,26 @@ public class BeerController {
 			throw new BeerNotFoundException();
 		}
 
+	}
+
+	@RequestMapping(value = "beers/modify/{beerId}", method = RequestMethod.POST)
+	public void addBeer(@PathVariable long beerId, @RequestBody Beer beer, @RequestHeader(value="Token") String token) throws JsonProcessingException, AuthenticationException, BeerNotFoundException {
+		if(!(tokens.contains(token))){
+			throw new AuthenticationException("unauthorized");
+		}
+		if(beerRepository.findById(beerId).isPresent()){
+			Beer beerFromRepo = beerRepository.findById(beerId).get();
+			beerFromRepo.setBeerName(beer.getBeerName());
+			beerFromRepo.setAlcoholPercent(beer.getAlcoholPercent());
+			beerFromRepo.setDescription(beer.getDescription());
+			try {
+				beerRepository.save(beerFromRepo);
+			} catch (Exception e) {
+				System.out.println("Error in saving to db");
+			}
+		} else {
+			throw new BeerNotFoundException();
+		}
 	}
 
 }
