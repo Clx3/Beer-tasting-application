@@ -45,6 +45,16 @@ public class UserAndTastingSessionController {
 		
 		return tastingSessionIds;
 	}
+
+	@RequestMapping(value = "userandtastingsession/users/{tastingSessionId}", method = RequestMethod.GET)
+	public List<Long> getTastingSessionsUserIds(@PathVariable long tastingSessionId) {
+		List<Long> userIds = new ArrayList<>();
+
+		userAndTastingSessionRepository.getTastingSessionsUserIds(tastingSessionId)
+				.stream().forEach(e -> userIds.add(e.longValue()));
+
+		return userIds;
+	}
 	
 	@RequestMapping(value = "userandtastingsession", method = RequestMethod.GET)
 	public UserAndTastingSession getByUserIdAndTastingSessionId(@RequestParam long userId, @RequestParam long tastingSessionId) throws UserHasNotJoinedSessionException {

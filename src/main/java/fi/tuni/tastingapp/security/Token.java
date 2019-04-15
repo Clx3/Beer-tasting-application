@@ -2,6 +2,7 @@ package fi.tuni.tastingapp.security;
 
 public class Token {
     private String token;
+    private long refreshed;
 
     public Token(){
 
@@ -13,6 +14,7 @@ public class Token {
 
     public void setToken(String token){
         this.token = token;
+        refresh();
     }
 
     public boolean equals(String requested) {
@@ -20,6 +22,14 @@ public class Token {
             return true;
 
         return false;
+    }
+
+    public void refresh(){
+        refreshed = System.currentTimeMillis();
+    }
+
+    public long getLatestRefresh(){
+        return refreshed;
     }
 
 }

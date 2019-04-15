@@ -1,5 +1,6 @@
 package fi.tuni.tastingapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.AuthenticationException;
@@ -7,11 +8,7 @@ import javax.naming.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import fi.tuni.tastingapp.entity.User;
 import fi.tuni.tastingapp.entity.UserAndTastingSession;
@@ -58,7 +55,13 @@ public class UserController {
 		}
 		return null;
 	}
-	
+
+	@RequestMapping(value = "users/{id}", method = RequestMethod.GET)
+	public User getUserById(@PathVariable long id) {
+
+		return userRepo.findById(id);
+	}
+
 	@ResponseStatus(code = HttpStatus.CONFLICT)
 	class UsernameAlreadyTakenException extends AuthenticationException {
 		

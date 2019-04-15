@@ -1,6 +1,7 @@
 package fi.tuni.tastingapp.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,11 +21,25 @@ public class TokenService implements TokenRepository {
         return null;
     }
 
+    @Scheduled(fixedRate = (1000 * 60 * 5))
+    public void deleteOldTokens() {
+        tokens.removeIf((token -> {
+            if(token.getLatestRefresh() <= System.currentTimeMillis() - (1000 * 60 * 5)){
+                System.out.println("Removed token: " + token.getToken());
+                return true;
+            } else
+                return false;
+        }));
+    }
+
     @Override
     public boolean contains(String a) {
         for(Token b : tokens){
-            if(b.equals(a))
+            if(b.equals(a)){
+                b.refresh();
                 return true;
+            }
+
         }
         return false;
     }
