@@ -25,3 +25,5 @@ yarn-error.log*
 /.project
 
 /.idea
+
+src/main/resources/images/

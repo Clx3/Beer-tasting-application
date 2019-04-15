@@ -14,6 +14,8 @@ public interface UserAndTastingSessionRepository extends CrudRepository<UserAndT
 	
 	public UserAndTastingSession findByUserIdAndTastingSessionId(long userId, long tastingSessionId);
 	
+	List<UserAndTastingSession> findAllByTastingSessionId(long tastingSessionId);
+	
 	@Query(value = "SELECT tastingSessionId FROM user_and_tastingsession WHERE userId LIKE(?1)", nativeQuery = true)
 	public List<BigInteger> findTastingSessionIdsByUserId(long userId);
 

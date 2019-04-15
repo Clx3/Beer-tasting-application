@@ -13,4 +13,6 @@ public interface RatingRepository extends CrudRepository<Rating, Long> {
 	public Rating findByUserIdAndBeerId(long userId, long beerId);
 
 	public List<Rating> findAllByBeerId(long beerId);
+
+	public List<Rating> deleteAllByBeerId(long beerId);
 }
