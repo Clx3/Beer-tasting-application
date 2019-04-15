@@ -37,6 +37,13 @@ public class RatingController {
 		return ratingRepository.findAllByBeerId(beerId);
 	}
 
+	@RequestMapping(value = "ratingavg/{beerId}")
+	public long getAvgRatingByBeerId(@PathVariable long beerId){
+		long avg = 0;
+		List<Rating> ratings = ratingRepository.findAllByBeerId(beerId);
+		return avg;
+	}
+
 	
 	@RequestMapping(value = "rating", method = RequestMethod.POST)
 	public Rating createOrUpdateRating(@RequestBody Rating rating, @RequestHeader(value="Token") String token) throws AuthenticationException {
