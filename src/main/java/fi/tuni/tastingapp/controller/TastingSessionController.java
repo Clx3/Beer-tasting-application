@@ -183,7 +183,10 @@ public class TastingSessionController {
 		if(toBeDeletedUserLinks != null && toBeDeletedUserLinks.size() > 0)
 			userAndTastingSessionRepository.deleteAll(toBeDeletedUserLinks);
 		
-		tastingSessionRepository.delete(tastingSessionRepository.findById(id));
+		TastingSession toBeDeletedSession = tastingSessionRepository.findById(id);
+		
+		if(toBeDeletedSession != null)
+			tastingSessionRepository.delete(toBeDeletedSession);
 	}
 
 }
