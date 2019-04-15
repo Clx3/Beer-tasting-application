@@ -28,9 +28,15 @@ public class RatingController {
 	public Rating getByUserIdAndBeerId(
 			@RequestParam long userId,
 			@RequestParam long beerId) {
-		
+
 		return ratingRepository.findByUserIdAndBeerId(userId, beerId);
 	}
+
+	@RequestMapping(value = "rating/{beerId}")
+	public List<Rating> getRatingsByBeerId(@PathVariable long beerId){
+		return ratingRepository.findAllByBeerId(beerId);
+	}
+
 	
 	@RequestMapping(value = "rating", method = RequestMethod.POST)
 	public Rating createOrUpdateRating(@RequestBody Rating rating, @RequestHeader(value="Token") String token) throws AuthenticationException {
