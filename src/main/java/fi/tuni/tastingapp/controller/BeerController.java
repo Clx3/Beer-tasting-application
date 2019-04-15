@@ -1,7 +1,6 @@
 package fi.tuni.tastingapp.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import fi.tuni.tastingapp.security.TokenRepository;
 import org.apache.tomcat.websocket.AuthenticationException;
@@ -13,7 +12,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import fi.tuni.tastingapp.entity.Beer;
 import fi.tuni.tastingapp.repository.BeerRepository;
-import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 public class BeerController {
