@@ -1,8 +1,6 @@
 package fi.tuni.tastingapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.naming.AuthenticationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import fi.tuni.tastingapp.entity.User;
-import fi.tuni.tastingapp.entity.UserAndTastingSession;
-import fi.tuni.tastingapp.repository.UserAndTastingSessionRepository;
 import fi.tuni.tastingapp.repository.UserRepository;
 
 @RestController
