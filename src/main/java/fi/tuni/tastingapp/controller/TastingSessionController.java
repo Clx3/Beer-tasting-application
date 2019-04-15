@@ -146,6 +146,20 @@ public class TastingSessionController {
 		return tastingSessionRepository.save(tastingSessionDTO);		
 	}
 	
+	@RequestMapping(value = "tastingsession/", method = RequestMethod.POST)
+	public TastingSession modifyTastingSession(@RequestBody String tastingSessionJsonString) {		
+		JsonObject tastingSessionObject = jsonParser.parse(tastingSessionJsonString).getAsJsonObject();
+		
+		/* Whacky shit */
+		TastingSession tastingSessionDTO = tastingSessionRepository.findById(tastingSessionObject.get("id").getAsLong());
+		tastingSessionDTO.setName(tastingSessionObject.get("name").getAsString());
+		tastingSessionDTO.setStartingDate(LocalDateTime.parse(tastingSessionObject.get("startingDate").getAsString(), dateTimeFormatter));
+		tastingSessionDTO.setAdditionalInfo(tastingSessionObject.get("additionalInfo").getAsString());
+		
+		
+		return tastingSessionRepository.save(tastingSessionDTO);		
+	}
+	
 	@RequestMapping(value = "tastingsession/addbeers/", method = RequestMethod.PUT)
 	public List<BeerAndTastingSession> addBeersToTastingSession(@RequestBody String beersJsonArray) {
 				
