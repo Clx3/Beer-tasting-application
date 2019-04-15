@@ -22,9 +22,11 @@ import com.google.gson.reflect.TypeToken;
 import fi.tuni.tastingapp.entity.Beer;
 import fi.tuni.tastingapp.entity.BeerAndTastingSession;
 import fi.tuni.tastingapp.entity.TastingSession;
+import fi.tuni.tastingapp.entity.UserAndTastingSession;
 import fi.tuni.tastingapp.repository.BeerAndTastingSessionRepository;
 import fi.tuni.tastingapp.repository.BeerRepository;
 import fi.tuni.tastingapp.repository.TastingSessionRepository;
+import fi.tuni.tastingapp.repository.UserAndTastingSessionRepository;
 
 /**
  * 
@@ -55,6 +57,9 @@ public class TastingSessionController {
 	
 	@Autowired
 	private BeerAndTastingSessionRepository beerAndTastingSessionRepository;
+	
+	@Autowired
+	private UserAndTastingSessionRepository userAndTastingSessionRepository;
 	
 	@Autowired
 	private BeerRepository beerRepository;
@@ -141,6 +146,20 @@ public class TastingSessionController {
 		return tastingSessionRepository.save(tastingSessionDTO);		
 	}
 	
+	@RequestMapping(value = "tastingsession/", method = RequestMethod.POST)
+	public TastingSession modifyTastingSession(@RequestBody String tastingSessionJsonString) {		
+		JsonObject tastingSessionObject = jsonParser.parse(tastingSessionJsonString).getAsJsonObject();
+		
+		/* Whacky shit */
+		TastingSession tastingSessionDTO = tastingSessionRepository.findById(tastingSessionObject.get("id").getAsLong());
+		tastingSessionDTO.setName(tastingSessionObject.get("name").getAsString());
+		tastingSessionDTO.setStartingDate(LocalDateTime.parse(tastingSessionObject.get("startingDate").getAsString(), dateTimeFormatter));
+		tastingSessionDTO.setAdditionalInfo(tastingSessionObject.get("additionalInfo").getAsString());
+		
+		
+		return tastingSessionRepository.save(tastingSessionDTO);		
+	}
+	
 	@RequestMapping(value = "tastingsession/addbeers/", method = RequestMethod.PUT)
 	public List<BeerAndTastingSession> addBeersToTastingSession(@RequestBody String beersJsonArray) {
 				
@@ -164,6 +183,24 @@ public class TastingSessionController {
 		}
 			System.out.println(beersArray.toString());
 		return null;
+	}
+	
+	@RequestMapping(value = "tastingsession/{id}", method = RequestMethod.DELETE)
+	public void deleteTastingSession(@PathVariable long id) {
+		List<BeerAndTastingSession> toBeDeletedBeerLinks = beerAndTastingSessionRepository.findAllByTastingSessionId(id);
+		
+		if(toBeDeletedBeerLinks != null && toBeDeletedBeerLinks.size() > 0)
+			beerAndTastingSessionRepository.deleteAll(toBeDeletedBeerLinks);
+		
+		List<UserAndTastingSession> toBeDeletedUserLinks = userAndTastingSessionRepository.findAllByTastingSessionId(id);
+		
+		if(toBeDeletedUserLinks != null && toBeDeletedUserLinks.size() > 0)
+			userAndTastingSessionRepository.deleteAll(toBeDeletedUserLinks);
+		
+		TastingSession toBeDeletedSession = tastingSessionRepository.findById(id);
+		
+		if(toBeDeletedSession != null)
+			tastingSessionRepository.delete(toBeDeletedSession);
 	}
 
 }

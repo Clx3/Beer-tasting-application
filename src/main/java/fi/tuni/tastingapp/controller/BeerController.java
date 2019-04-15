@@ -1,7 +1,11 @@
 package fi.tuni.tastingapp.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+import fi.tuni.tastingapp.entity.BeerAndTastingSession;
+import fi.tuni.tastingapp.repository.BeerAndTastingSessionRepository;
+import fi.tuni.tastingapp.repository.RatingRepository;
 import fi.tuni.tastingapp.security.TokenRepository;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,12 @@ public class BeerController {
 
 	@Autowired
 	private TokenRepository tokens;
+
+	@Autowired
+	private BeerAndTastingSessionRepository beerAndTasting;
+
+	@Autowired
+	private RatingRepository ratingRepository;
 
 	@RequestMapping(value = "beers/{beerIds}", method = RequestMethod.GET)
 	public List<Beer> getBeersByIds(@PathVariable List<Long> beerIds) throws Exception{
@@ -44,11 +54,57 @@ public class BeerController {
 		return beerRepository.save(beer);
 	}
 
+	@RequestMapping(value = "beers/{beerId}", method = RequestMethod.DELETE)
+	public void removeBeer(@PathVariable long beerId, @RequestHeader(value="Token") String token) throws AuthenticationException, BeerNotFoundException, BeerAlreadyInSession {
+		if(!(tokens.contains(token))){
+			throw new AuthenticationException("unauthorized");
+		}
+		if(beerRepository.findById(beerId).isPresent()){
+			if(beerAndTasting.findAllByBeerId(beerId).isEmpty()){
+				beerRepository.deleteById(beerId);
+				ratingRepository.deleteAllByBeerId(beerId).forEach((rating -> System.out.println("Deleted rating: " + rating)));
+			} else {
+				throw new BeerAlreadyInSession();
+			}
+		} else {
+			throw new BeerNotFoundException();
+		}
+
+	}
+
+	@RequestMapping(value = "beers/modify/{beerId}", method = RequestMethod.POST)
+	public void addBeer(@PathVariable long beerId, @RequestBody Beer beer, @RequestHeader(value="Token") String token) throws JsonProcessingException, AuthenticationException, BeerNotFoundException {
+		if(!(tokens.contains(token))){
+			throw new AuthenticationException("unauthorized");
+		}
+		if(beerRepository.findById(beerId).isPresent()){
+			Beer beerFromRepo = beerRepository.findById(beerId).get();
+			beerFromRepo.setBeerName(beer.getBeerName());
+			beerFromRepo.setAlcoholPercent(beer.getAlcoholPercent());
+			beerFromRepo.setDescription(beer.getDescription());
+			try {
+				beerRepository.save(beerFromRepo);
+			} catch (Exception e) {
+				System.out.println("Error in saving to db");
+			}
+		} else {
+			throw new BeerNotFoundException();
+		}
+	}
+
 }
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
 	class BeerNotFoundException extends Exception{
 
 	public BeerNotFoundException() {
 		super("No beers found");
+	}
+
+}
+
+@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+class BeerAlreadyInSession extends Exception {
+	public BeerAlreadyInSession(){
+		super("Can't delete, beer already added to session");
 	}
 }
