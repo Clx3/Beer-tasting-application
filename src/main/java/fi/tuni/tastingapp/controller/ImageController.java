@@ -20,25 +20,25 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class ImageController {
-	
-	private static final Path IMG_FOLDER_PATH = Paths.get(System.getProperty("user.dir") + "/src/main/resources/images/");
-	
-	@RequestMapping("images/upload")
-	public String uploadImage(@RequestParam MultipartFile file, @RequestParam long beerId) throws IllegalStateException, IOException {
-		if(!file.getContentType().equalsIgnoreCase("image/png")) {
-			File toBeConvertedFile = new File(getBeerImgPath(beerId).toString());
-			file.transferTo(toBeConvertedFile);
-			BufferedImage bufferedImage = ImageIO.read(toBeConvertedFile);
-			ImageIO.write(bufferedImage, "png", toBeConvertedFile);
-			
-		} else {
-			file.transferTo(new File(getBeerImgPath(beerId).toUri()));
-		}
-		return "";
-	}
-	
-	@RequestMapping(value = "images/get/{beerId}")
-	public ResponseEntity<Resource> getImage(@PathVariable long beerId) {
+
+    private static final Path IMG_FOLDERPATH = Paths.get(System.getProperty("user.dir") + "/src/main/resources/images/");
+
+    @RequestMapping("images/upload")
+    public String uploadImage(@RequestParam MultipartFile file, @RequestParam long beerId) throws IllegalStateException, IOException {
+        if(!file.getContentType().equalsIgnoreCase("image/png")) {
+            File toBeConvertedFile = new File(getBeerImgPath(beerId).toString());
+            file.transferTo(toBeConvertedFile);
+            BufferedImage bufferedImage = ImageIO.read(toBeConvertedFile);
+            ImageIO.write(bufferedImage, "png", toBeConvertedFile);
+
+        } else {
+            file.transferTo(new File(getBeerImgPath(beerId).toUri()));
+        }
+        return "";
+    }
+
+    @RequestMapping(value = "images/get/{beerId}")
+    public ResponseEntity<Resource> getImage(@PathVariable long beerId) {
         Resource file = loadAsResource(beerId);
         return ResponseEntity
                 .ok()
@@ -61,13 +61,13 @@ public class ImageController {
         }
         return null;
     }
-     
+
     private Path getBeerImgPath(long beerId) {
-    	return Paths.get(System.getProperty("user.dir") + "/src/main/resources/images/", getBeerImgName(beerId));
+        return Paths.get(System.getProperty("user.dir") + "/src/main/resources/images/", getBeerImgName(beerId));
     }
-	
-	private String getBeerImgName(long beerId) {
-		return String.format("drink_%d.png", beerId);
-	}
+
+    private String getBeerImgName(long beerId) {
+        return String.format("drink%d.png", beerId);
+    }
 
 }
